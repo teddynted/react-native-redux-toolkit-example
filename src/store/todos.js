@@ -14,7 +14,7 @@ const slice = createSlice({
 });
 export default slice.reducer
 
-// Actions
+// Action
 const { addEditDeleteTodoSuccess } = slice.actions
 export const addEditDeleteTodo = (todos) => async dispatch => {
     try {
