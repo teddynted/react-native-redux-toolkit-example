@@ -27,7 +27,7 @@ export default function AddTodo({navigation}) {
             }
             dispatch(addEditDeleteTodo(todoEntry));
             onChangeText('')
-            navigation.navigate('ViewTodos', { item: '' })
+            navigation.navigate('ViewTodos')
         }
     }
     return (

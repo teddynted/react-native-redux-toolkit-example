@@ -20,7 +20,7 @@ export default function ViewTodos({navigation}) {
     const dispatch = useDispatch()
     const toggleTaskStatus = i => {
         let updateTodoItem = todos.map(item => {
-            if(item.index === i - 1) {
+            if(item.index === i) {
                 let isDone = !item.isDone,
                 temp = Object.assign({}, item, { 'isDone': isDone });
                 return temp;
@@ -36,7 +36,6 @@ export default function ViewTodos({navigation}) {
             navigation.navigate('AddTodo');
         }
     }
-    console.log(todos);
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.text}>My Todo's</Text>
