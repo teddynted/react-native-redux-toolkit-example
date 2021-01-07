@@ -20,7 +20,7 @@ export default function ViewTodos({navigation}) {
     const dispatch = useDispatch()
     const toggleTaskStatus = i => {
         let updateTodoItem = todos.map(item => {
-            if( item.index === i + 1 ) {
+            if(item.index === i - 1) {
                 let isDone = !item.isDone,
                 temp = Object.assign({}, item, { 'isDone': isDone });
                 return temp;
@@ -30,9 +30,13 @@ export default function ViewTodos({navigation}) {
         dispatch(addEditDeleteTodo(updateTodoItem))
     }
     const deleteTask = i => {
-        let deleteTodoItem = todos.filter(({index}) => index !== i + 1);
+        let deleteTodoItem = todos.filter(({index}) => index !== i);
         dispatch(addEditDeleteTodo(deleteTodoItem === 0 ? null : deleteTodoItem))
+        if( deleteTodoItem === 0 ) {
+            navigation.navigate('AddTodo');
+        }
     }
+    console.log(todos);
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.text}>My Todo's</Text>
@@ -45,10 +49,10 @@ export default function ViewTodos({navigation}) {
             <FlatList
                 data={todos}
                 keyExtractor={ (_, index) => index.toString()}
-                renderItem={ ({ item, index }) =>
+                renderItem={ ({ item }) =>
                     <View style={styles.todoItem}>
                         <TouchableOpacity
-                            onPress={() => toggleTaskStatus(index)}
+                            onPress={() => toggleTaskStatus(item.index)}
                         >
                             <MaterialIcons 
                                 name={item.isDone ? 'check-circle' : 'radio-button-unchecked'} 
@@ -60,12 +64,12 @@ export default function ViewTodos({navigation}) {
                             {item.task}
                         </Text>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('EditTodo', { item: { 'index': index + 1 }})}
+                            onPress={() => navigation.navigate('EditTodo', { item: { 'index': item.index }})}
                         >
                             <AntDesign name="edit" size={24} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => deleteTask(index)}
+                            onPress={() => deleteTask(item.index)}
                         >
                             <AntDesign name="delete" size={24} color="#dc3545" />
                         </TouchableOpacity>
