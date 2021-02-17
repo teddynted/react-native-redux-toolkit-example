@@ -30,8 +30,8 @@ jobs:
         run: expo diagnostics
       - name: Staging
         run: expo publish --release-channel staging-v1
-      - name: Production
-        run: expo publish --release-channel prod-v1
+      # - name: Production
+      #   run: expo publish --release-channel prod-v1
       # - name: Build iOS app
       #   run: expo build:ios
       #   env:
