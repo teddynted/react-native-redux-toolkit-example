@@ -1,0 +1,44 @@
+name: Publish to Dealr
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  publish-to-teddys-acc:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - uses: actions/setup-node@v1
+        with: 
+          node-version: ${{matrix.node-version}}
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 4.x
+          expo-username: ${{secrets.EXPO_CLI_USERNAME}}
+          expo-password: ${{secrets.EXPO_CLI_PASSWORD}}
+      - name: Install dependencies
+        run: yarn install
+      - name: Run unit tests
+        run: npm test
+      - name: Expo whoami
+        run: expo w
+      - name: Diagnostics
+        run: expo diagnostics
+      - name: Staging
+        run: expo publish --release-channel staging-v1
+      - name: Production
+        run: expo publish --release-channel prod-v1
+      # - name: Build iOS app
+      #   run: expo build:ios
+      #   env:
+      #       EXPO_APPLE_ID: ${{secrets.EXPO_APPLE_ID}}
+      #       EXPO_APPLE_ID_PASSWORD: ${{secrets.EXPO_APPLE_ID_PASSWORD}}
+      # - name: Upload iOS app
+      #   run: expo upload:ios --app-name "Dealr"
+      #   env:
+      #       EXPO_APPLE_ID: ${{secrets.EXPO_APPLE_ID}}
+      #       EXPO_APPLE_ID_PASSWORD: ${{secrets.EXPO_APPLE_ID_PASSWORD}}
